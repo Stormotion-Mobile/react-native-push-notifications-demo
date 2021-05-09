@@ -24,7 +24,7 @@ export const getSavedDeviceTokenState = async () => {
       ? JSON.parse(tokenStateAsString)
       : null;
 
-    return tokenState;
+    return tokenState as DeviceTokenState;
   } catch (error) {
     console.log('Getting device token error', error);
   }
