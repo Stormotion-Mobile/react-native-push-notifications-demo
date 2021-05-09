@@ -1,11 +1,24 @@
 import {NavigationContainer} from '@react-navigation/native';
-import React from 'react';
+import React, {useCallback, useEffect} from 'react';
 import 'react-native-gesture-handler';
 import RootNavigator from './src/navigation/RootNavigator';
+import {
+  rootNavigationRef,
+  setRootNavigationReady,
+} from './src/utils/navigation';
 
 const App = () => {
+  const setNavigationReady = useCallback(
+    () => setRootNavigationReady(true),
+    [],
+  );
+
+  useEffect(() => {
+    return () => setRootNavigationReady(false);
+  }, []);
+
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={rootNavigationRef} onReady={setNavigationReady}>
       <RootNavigator />
     </NavigationContainer>
   );

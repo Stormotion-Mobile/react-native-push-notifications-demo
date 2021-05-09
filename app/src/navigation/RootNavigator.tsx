@@ -7,6 +7,7 @@ import Header from '../components/Header';
 import usePushNotifications from '../hooks/usePushNotifications';
 import ArticleScreen from '../screens/Article';
 import MainScreen from '../screens/Main';
+import {initNotifications} from '../utils/pushNotifications';
 import {Article} from '../utils/types';
 import * as NavigationKeys from './NavigationKeys';
 
@@ -41,6 +42,10 @@ const RootNavigator = () => {
     (async () => await syncNotifications())();
     firstLoaded.current = false;
   }, [syncNotifications]);
+
+  useEffect(() => {
+    initNotifications();
+  }, []);
 
   return (
     <Stack.Navigator

@@ -1,19 +1,40 @@
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import {sentenceCase} from 'change-case';
 import {Platform} from 'react-native';
 import PushNotification, {
   PushNotificationOptions,
 } from 'react-native-push-notification';
+import * as NavigationKeys from '../navigation/NavigationKeys';
 import {registerToken} from './deviceToken';
+import {navigate} from './navigation';
 
 enum NotificationCategory {
   TECH = 'tech',
   DEVELOPMENT = 'development',
 }
 
+const openNotification = (
+  //The type of a parameter in PushNotificationOptions['onNotification'] is changing
+  //from version to version. This declaration guarantees the correct type.
+  notification: Parameters<
+    NonNullable<PushNotificationOptions['onNotification']>
+  >[0],
+) => {
+  console.log('Notification', notification);
+
+  if (notification.userInteraction === false) {
+    return;
+  }
+
+  navigate(NavigationKeys.Article, {id: notification.data.articleId});
+
+  notification.finish(PushNotificationIOS.FetchResult.NoData);
+};
+
 export const options: PushNotificationOptions = {
   onRegister: async ({token}) => await registerToken(token),
 
-  onNotification: notification => console.log('Notification', notification),
+  onNotification: openNotification,
 
   onRegistrationError: error =>
     console.log('On push notifications registration error', error),
@@ -25,6 +46,14 @@ export const options: PushNotificationOptions = {
   },
   popInitialNotification: false,
   requestPermissions: Platform.OS === 'android',
+};
+
+export const initNotifications = () => {
+  PushNotification.popInitialNotification(notification => {
+    notification && openNotification(notification);
+  });
+
+  PushNotification.removeAllDeliveredNotifications();
 };
 
 const channelExistsAsync = (channelId: string) =>
