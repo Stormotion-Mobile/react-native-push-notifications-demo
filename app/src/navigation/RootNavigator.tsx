@@ -2,8 +2,9 @@ import {
   createStackNavigator,
   StackNavigationOptions,
 } from '@react-navigation/stack';
-import React, {useMemo} from 'react';
+import React, {useEffect, useMemo, useRef} from 'react';
 import Header from '../components/Header';
+import usePushNotifications from '../hooks/usePushNotifications';
 import ArticleScreen from '../screens/Article';
 import MainScreen from '../screens/Main';
 import {Article} from '../utils/types';
@@ -17,6 +18,11 @@ export type RootNavigatorParamList = {
 const Stack = createStackNavigator<RootNavigatorParamList>();
 
 const RootNavigator = () => {
+  const {syncNotifications} = usePushNotifications();
+
+  //To prevent calling syncNotifications function several times
+  const firstLoaded = useRef(true);
+
   const commonScreenOptions = useMemo<StackNavigationOptions>(
     () => ({headerStyle: {backgroundColor: '#fff'}}),
     [],
@@ -26,6 +32,15 @@ const RootNavigator = () => {
     () => ({headerTitle: () => <Header />}),
     [],
   );
+
+  useEffect(() => {
+    if (!firstLoaded.current) {
+      return;
+    }
+
+    (async () => await syncNotifications())();
+    firstLoaded.current = false;
+  }, [syncNotifications]);
 
   return (
     <Stack.Navigator
