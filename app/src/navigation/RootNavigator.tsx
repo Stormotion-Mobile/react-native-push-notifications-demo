@@ -4,8 +4,8 @@ import {
 } from '@react-navigation/stack';
 import React, {useMemo} from 'react';
 import Header from '../components/Header';
-import ArticleScreen from '../screens/ArticleScreen';
-import MainScreen from '../screens/MainScreen';
+import ArticleScreen from '../screens/Article';
+import MainScreen from '../screens/Main';
 import {Article} from '../utils/types';
 import * as NavigationKeys from './NavigationKeys';
 

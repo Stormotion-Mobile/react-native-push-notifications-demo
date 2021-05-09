@@ -20,19 +20,19 @@ import useQuery from '../hooks/useQuery';
 import * as NavigationKeys from '../navigation/NavigationKeys';
 import {RootNavigatorParamList} from '../navigation/RootNavigator';
 import {ASPECT_RATIO} from '../utils/constants';
-import {Article} from '../utils/types';
+import {Article as ArticleType} from '../utils/types';
 
 type ScreenProps = StackScreenProps<
   RootNavigatorParamList,
   typeof NavigationKeys.Article
 >;
 
-const ArticleScreen: React.FC<ScreenProps> = ({
+const Article: React.FC<ScreenProps> = ({
   route: {
     params: {id: articleId},
   },
 }) => {
-  const {data, error, loading} = useQuery<Article>('article', {articleId});
+  const {data, error, loading} = useQuery<ArticleType>('article', {articleId});
 
   const {cover, title, content} = data ?? {title: '', content: ''};
 
@@ -136,4 +136,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default React.memo(ArticleScreen);
+export default React.memo(Article);

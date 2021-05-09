@@ -1,5 +1,5 @@
 import {StackScreenProps} from '@react-navigation/stack';
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {
   FlatList,
   FlatListProps,
@@ -14,6 +14,7 @@ import ArticleCard from '../components/ArticleCard';
 import EmptyList from '../components/EmptyList';
 import ErrorComponent from '../components/ErrorComponent';
 import LoadingSpinner from '../components/LoadingSpinner';
+import usePushNotifications from '../hooks/usePushNotifications';
 import useQuery from '../hooks/useQuery';
 import * as NavigationKeys from '../navigation/NavigationKeys';
 import {RootNavigatorParamList} from '../navigation/RootNavigator';
@@ -24,10 +25,12 @@ type ScreenProps = StackScreenProps<
   typeof NavigationKeys.Article
 >;
 
-const MainScreen: React.FC<ScreenProps> = ({navigation}) => {
+const Main: React.FC<ScreenProps> = ({navigation}) => {
   const {data, error, loading} = useQuery<Article[]>('articles');
 
   const {bottom} = useSafeAreaInsets();
+
+  const {enableNotifications} = usePushNotifications();
 
   const emptyComponent = useMemo(() => <EmptyList />, []);
 
@@ -49,6 +52,14 @@ const MainScreen: React.FC<ScreenProps> = ({navigation}) => {
   const keyExtractorHandler = useCallback<
     NonNullable<FlatListProps<Article>['keyExtractor']>
   >(item => item.id, []);
+
+  useEffect(() => {
+    const enableNotificationsAsync = async () => await enableNotifications();
+
+    enableNotificationsAsync().catch(err =>
+      console.log('Error on enabling notifications', err),
+    );
+  }, [enableNotifications]);
 
   if (error) {
     return <ErrorComponent />;
@@ -75,4 +86,4 @@ const styles = StyleSheet.create({
   container: {flex: 1},
 });
 
-export default React.memo(MainScreen);
+export default React.memo(Main);
