@@ -54,7 +54,13 @@ const usePushNotifications = () => {
     Platform.OS === 'ios' && (await PushNotification.requestPermissions());
 
     const savedToken = await getSavedDeviceTokenState();
-    savedToken && registerDeviceToken(savedToken.newToken);
+    const {newToken, actualToken} = savedToken ?? {};
+
+    if (!savedToken || newToken === actualToken) {
+      return;
+    }
+
+    newToken && registerDeviceToken(newToken);
   }, [registerDeviceToken]);
 
   const showPermissionAlert = useCallback(
@@ -86,7 +92,7 @@ const usePushNotifications = () => {
       return;
     }
 
-    activateNotifications();
+    await activateNotifications();
   }, [activateNotifications, checkCanSendNotifications, showPermissionAlert]);
 
   const disableNotifications = useCallback(async () => {
@@ -104,17 +110,8 @@ const usePushNotifications = () => {
       return;
     }
 
-    Platform.OS === 'ios' && (await PushNotification.requestPermissions());
-
-    const savedToken = await getSavedDeviceTokenState();
-    const {newToken, actualToken} = savedToken ?? {};
-
-    if (!savedToken || newToken === actualToken) {
-      return;
-    }
-
-    newToken && registerDeviceToken(newToken);
-  }, [permissionsGranted, registerDeviceToken, disableNotifications]);
+    await activateNotifications();
+  }, [permissionsGranted, activateNotifications, disableNotifications]);
 
   return {
     disableNotifications,
