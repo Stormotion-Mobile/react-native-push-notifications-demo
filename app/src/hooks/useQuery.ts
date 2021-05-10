@@ -25,8 +25,6 @@ const useQuery = (type: QueryType, options?: {articleId: string}) => {
           ? await getArticle(articleId!)
           : await getArticles();
 
-        console.log('Articles response', response);
-
         setData(response);
         setLoading(false);
       } catch (err) {

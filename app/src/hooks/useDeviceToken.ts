@@ -16,8 +16,6 @@ const useDeviceToken = () => {
 
         const response = await saveDeviceToken(deviceId, token);
 
-        console.log('Register token response', response);
-
         const savedTokenState = await getSavedDeviceTokenState();
 
         const newTokenState: DeviceTokenState = {
@@ -37,9 +35,7 @@ const useDeviceToken = () => {
   const unregisterDeviceToken = useCallback<(id: string) => Promise<void>>(
     async id => {
       try {
-        const response = await deleteDeviceToken(id);
-
-        console.log('Unregister token response', response);
+        await deleteDeviceToken(id);
 
         removeActualDeviceTokenState();
       } catch (error) {
