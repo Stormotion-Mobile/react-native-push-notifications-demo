@@ -1,0 +1,24 @@
+version: '3.4'
+
+services:
+  pushnotifications-app:
+    container_name: pushnotifications-app
+    build: .
+    depends_on:
+      - pushnotifications-postgres
+    env_file: api.env
+    expose:
+      - '4000'
+    volumes:
+      - ./certs:/usr/src/app/certs
+
+  pushnotifications-postgres:
+    container_name: pushnotificationsdemo-postgres
+    image: postgres:12
+    env_file: db.env
+    volumes:
+      - postgresdata:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  postgresdata:
