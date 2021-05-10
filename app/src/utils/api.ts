@@ -1,5 +1,3 @@
-import {mockedArticles} from './mocked';
-
 const API_URL = 'http://localhost:4000';
 const ARTICLES_ENDPOINT = 'articles';
 const DEVICE_TOKENS_ENDPOINT = 'tokens';
@@ -25,15 +23,11 @@ const request = async (
   }
 };
 
-// export const getArticles = async () => await request(`${API_URL}/${ARTICLES_ENDPOINT}`);
-
-// export const getArticle = async (articleId: string) =>
-//   await request(`${API_URL}/${ARTICLES_ENDPOINT}/${articleId}`);
-
-export const getArticles = async () => mockedArticles;
+export const getArticles = async () =>
+  await request(`${API_URL}/${ARTICLES_ENDPOINT}`);
 
 export const getArticle = async (articleId: string) =>
-  mockedArticles.find(article => article.id === articleId);
+  await request(`${API_URL}/${ARTICLES_ENDPOINT}/${articleId}`);
 
 export const saveDeviceToken = async (deviceId: string, token: string) =>
   await request(`${API_URL}/${DEVICE_TOKENS_ENDPOINT}`, 'POST', {
@@ -42,4 +36,4 @@ export const saveDeviceToken = async (deviceId: string, token: string) =>
   });
 
 export const deleteDeviceToken = async (id: string) =>
-  await request(`${API_URL}/${DEVICE_TOKENS_ENDPOINT}`, 'DELETE', {id});
+  await request(`${API_URL}/${DEVICE_TOKENS_ENDPOINT}/${id}`, 'DELETE');

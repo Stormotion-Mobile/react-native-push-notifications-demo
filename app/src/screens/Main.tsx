@@ -26,7 +26,9 @@ type ScreenProps = StackScreenProps<
 >;
 
 const Main: React.FC<ScreenProps> = ({navigation}) => {
-  const {data, error, loading} = useQuery<Article[]>('articles');
+  const {data, error, loading} = useQuery('articles');
+
+  const articles = data?.articles ? (data.articles as Article[]) : [];
 
   const {bottom} = useSafeAreaInsets();
 
@@ -72,7 +74,7 @@ const Main: React.FC<ScreenProps> = ({navigation}) => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={data}
+        data={articles}
         renderItem={renderItem}
         keyExtractor={keyExtractorHandler}
         ListEmptyComponent={emptyComponent}

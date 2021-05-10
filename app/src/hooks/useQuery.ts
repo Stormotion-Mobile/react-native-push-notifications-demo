@@ -1,14 +1,10 @@
 import {useEffect, useMemo, useState} from 'react';
 import {getArticle, getArticles} from '../utils/api';
-import {Article} from '../utils/types';
 
 type QueryType = 'articles' | 'article';
 
-const useQuery = <T extends Article | Article[]>(
-  type: QueryType,
-  options?: {articleId: string},
-) => {
-  const [data, setData] = useState<T>();
+const useQuery = (type: QueryType, options?: {articleId: string}) => {
+  const [data, setData] = useState<Record<string, any>>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<any>();
 
@@ -26,8 +22,10 @@ const useQuery = <T extends Article | Article[]>(
         }
 
         const response = isArticleType
-          ? ((await getArticle(articleId!)) as T)
-          : ((await getArticles()) as T);
+          ? await getArticle(articleId!)
+          : await getArticles();
+
+        console.log('Articles response', response);
 
         setData(response);
         setLoading(false);

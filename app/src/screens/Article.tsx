@@ -27,14 +27,23 @@ type ScreenProps = StackScreenProps<
   typeof NavigationKeys.Article
 >;
 
+const emptyArticle: ArticleType = {
+  id: 'emptyArticle',
+  title: '',
+  content: '',
+  shortContent: '',
+};
+
 const Article: React.FC<ScreenProps> = ({
   route: {
     params: {id: articleId},
   },
 }) => {
-  const {data, error, loading} = useQuery<ArticleType>('article', {articleId});
+  const {data, error, loading} = useQuery('article', {articleId});
 
-  const {cover, title, content} = data ?? {title: '', content: ''};
+  const article = data?.article ? (data.article as ArticleType) : emptyArticle;
+
+  const {cover, title, content} = article;
 
   const {width} = useWindowDimensions();
 
