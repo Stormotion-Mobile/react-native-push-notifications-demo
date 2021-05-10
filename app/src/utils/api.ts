@@ -1,4 +1,8 @@
+// To connect API on a physical device, specify the IP address
+// e.g. 'http://192.168.0.100:4000'
+// You can find it in the computer settings.
 const API_URL = 'http://localhost:4000';
+
 const ARTICLES_ENDPOINT = 'articles';
 const DEVICE_TOKENS_ENDPOINT = 'tokens';
 
@@ -11,7 +15,7 @@ const request = async (
     const response = await fetch(url, {
       headers: {'Content-Type': 'application/json'},
       method,
-      body,
+      body: JSON.stringify(body),
     });
 
     const json = await response.json();
