@@ -1,53 +1,15 @@
-import {useCallback, useMemo} from 'react';
+import {useCallback} from 'react';
 import {Alert, Linking, Platform} from 'react-native';
-import PushNotification, {
-  PushNotificationPermissions,
-} from 'react-native-push-notification';
+import PushNotification from 'react-native-push-notification';
 import {getSavedDeviceTokenState} from '../utils/deviceToken';
+import {
+  arePermissionsGranted,
+  checkCanSendNotifications,
+} from '../utils/pushNotificationsPermissions';
 import useDeviceToken from './useDeviceToken';
-
-const checkPermissionsAsync = () =>
-  new Promise<PushNotificationPermissions>(resolve => {
-    PushNotification.checkPermissions(permissions => resolve(permissions));
-  });
 
 const usePushNotifications = () => {
   const {registerDeviceToken, unregisterDeviceToken} = useDeviceToken();
-
-  const checkPermissionsGranted = useCallback<
-    (permissions: PushNotificationPermissions) => boolean
-  >(permissions => {
-    const values = Object.values(permissions) as boolean[];
-
-    const granted = values.includes(true);
-
-    return granted;
-  }, []);
-
-  const permissionsGranted = useMemo(async () => {
-    if (Platform.OS === 'android') {
-      return true;
-    }
-
-    const permissions = await checkPermissionsAsync();
-
-    const granted = checkPermissionsGranted(permissions);
-
-    return granted;
-  }, [checkPermissionsGranted]);
-
-  const checkCanSendNotifications = useCallback(async () => {
-    const granted = await permissionsGranted;
-
-    if (granted) {
-      return true;
-    }
-
-    const permissions = await PushNotification.requestPermissions();
-    const updatedGrant = checkPermissionsGranted(permissions);
-
-    return updatedGrant;
-  }, [checkPermissionsGranted, permissionsGranted]);
 
   const activateNotifications = useCallback(async () => {
     //To get the token definitely on iOS we need to request permissions
@@ -93,7 +55,7 @@ const usePushNotifications = () => {
     }
 
     await activateNotifications();
-  }, [activateNotifications, checkCanSendNotifications, showPermissionAlert]);
+  }, [activateNotifications, showPermissionAlert]);
 
   const disableNotifications = useCallback(async () => {
     const savedToken = await getSavedDeviceTokenState();
@@ -103,7 +65,7 @@ const usePushNotifications = () => {
   }, [unregisterDeviceToken]);
 
   const syncNotifications = useCallback(async () => {
-    const granted = await permissionsGranted;
+    const granted = await arePermissionsGranted();
 
     if (!granted) {
       disableNotifications();
@@ -111,7 +73,7 @@ const usePushNotifications = () => {
     }
 
     await activateNotifications();
-  }, [permissionsGranted, activateNotifications, disableNotifications]);
+  }, [activateNotifications, disableNotifications]);
 
   return {
     disableNotifications,
