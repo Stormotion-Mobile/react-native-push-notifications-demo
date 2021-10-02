@@ -9,15 +9,16 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
+import {usePushNotifications} from 'react-native-push-notifications-setup';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import ArticleCard from '../components/ArticleCard';
 import EmptyList from '../components/EmptyList';
 import ErrorComponent from '../components/ErrorComponent';
 import LoadingSpinner from '../components/LoadingSpinner';
-import usePushNotifications from '../hooks/usePushNotifications';
 import useQuery from '../hooks/useQuery';
 import * as NavigationKeys from '../navigation/NavigationKeys';
 import {RootNavigatorParamList} from '../navigation/RootNavigator';
+import {deviceTokenAPIRequests} from '../utils/api';
 import {Article} from '../utils/types';
 
 type ScreenProps = StackScreenProps<
@@ -28,11 +29,11 @@ type ScreenProps = StackScreenProps<
 const Main: React.FC<ScreenProps> = ({navigation}) => {
   const {data, error, loading} = useQuery('articles');
 
+  const {enableNotifications} = usePushNotifications(deviceTokenAPIRequests);
+
   const articles = data?.articles ? (data.articles as Article[]) : [];
 
   const {bottom} = useSafeAreaInsets();
-
-  const {enableNotifications} = usePushNotifications();
 
   const emptyComponent = useMemo(() => <EmptyList />, []);
 
@@ -56,11 +57,10 @@ const Main: React.FC<ScreenProps> = ({navigation}) => {
   >(item => item.id, []);
 
   useEffect(() => {
-    const enableNotificationsAsync = async () => await enableNotifications();
+    const enableNotificationsAsync = () =>
+      setTimeout(enableNotifications, 10000);
 
-    enableNotificationsAsync().catch(err =>
-      console.log('Error on enabling notifications', err),
-    );
+    enableNotificationsAsync();
   }, [enableNotifications]);
 
   if (error) {

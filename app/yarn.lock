@@ -6111,6 +6111,10 @@ react-native-push-notification@^8.1.1:
   resolved "https://registry.yarnpkg.com/react-native-push-notification/-/react-native-push-notification-8.1.1.tgz#a41d20c70ea5a7709417e96261b225461f8dc73a"
   integrity sha512-XpBtG/w+a6WXTxu6l1dNYyTiHnbgnvjoc3KxPTxYkaIABRmvuJZkFxqruyGvfCw7ELAlZEAJO+dthdTabCe1XA==
 
+react-native-push-notifications-setup@/Users/user/Stormotion/react-native-push-notifications-setup/react-native-push-notifications-setup-0.0.1.tgz:
+  version "0.0.1"
+  resolved "/Users/user/Stormotion/react-native-push-notifications-setup/react-native-push-notifications-setup-0.0.1.tgz#99841ffc879dbc9ded6138536f8a3b792a629a1d"
+
 react-native-reanimated@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-2.1.0.tgz#b9ad04aee490e1e030d0a6cdaa43a14895d9a54d"

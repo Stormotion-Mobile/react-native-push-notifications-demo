@@ -1,17 +1,28 @@
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
-import {sentenceCase} from 'change-case';
-import {Platform} from 'react-native';
-import PushNotification, {
+import {
+  ChannelObject,
   PushNotificationOptions,
 } from 'react-native-push-notification';
 import * as NavigationKeys from '../navigation/NavigationKeys';
-import {registerToken} from './deviceToken';
 import {navigate} from './navigation';
+import {
+  PushNotificationInitializeProps,
+  configurePushNotifications as configurePushNotificationsSetup,
+} from 'react-native-push-notifications-setup';
 
-enum NotificationCategory {
-  TECH = 'tech',
-  DEVELOPMENT = 'development',
-}
+const channelsMainInformation: ChannelObject[] = [
+  {channelId: 'tech', channelName: 'Tech'},
+  {channelId: 'development', channelName: 'Development'},
+];
+
+export const channels: ChannelObject[] = channelsMainInformation.map(
+  channelInfo => ({
+    importance: 5,
+    soundName: 'default',
+    vibrate: true,
+    ...channelInfo,
+  }),
+);
 
 const openNotification = (
   //The type of a parameter in PushNotificationOptions['onNotification'] is changing
@@ -20,7 +31,7 @@ const openNotification = (
     NonNullable<PushNotificationOptions['onNotification']>
   >[0],
 ) => {
-  console.log('Notification', notification);
+  __DEV__ && console.log('Notification', notification);
 
   if (notification.userInteraction === false) {
     return;
@@ -32,55 +43,13 @@ const openNotification = (
 };
 
 export const options: PushNotificationOptions = {
-  onRegister: async ({token}) => await registerToken(token),
-
   onNotification: openNotification,
-
-  onRegistrationError: error =>
-    console.log('On push notifications registration error', error),
-
-  permissions: {
-    alert: true,
-    badge: true,
-    sound: true,
-  },
-  popInitialNotification: false,
-  requestPermissions: Platform.OS === 'android',
 };
 
-export const initNotifications = () => {
-  PushNotification.popInitialNotification(notification => {
-    notification && openNotification(notification);
-  });
-
-  PushNotification.removeAllDeliveredNotifications();
+export const initializeProps: PushNotificationInitializeProps = {
+  onNotification: openNotification,
+  removeAllDeliveredNotifications: true,
 };
 
-const channelExistsAsync = (channelId: string) =>
-  new Promise<boolean>(resolve => {
-    PushNotification.channelExists(channelId, exists => resolve(exists));
-  });
-
-export const createNotificationsChannels = async () => {
-  if (Platform.OS !== 'android') {
-    return;
-  }
-
-  for (const category of Object.values(NotificationCategory)) {
-    const exists = await channelExistsAsync(category);
-    if (exists) {
-      return;
-    }
-
-    PushNotification.createChannel(
-      {
-        channelId: category,
-        channelName: sentenceCase(category),
-        importance: 5,
-        soundName: 'default',
-        vibrate: true,
-      },
-      created => console.log(`Channel with id ${category} created:`, created),
-    );
-  }
-};
+export const configurePushNotifications = () =>
+  configurePushNotificationsSetup(options, channels);

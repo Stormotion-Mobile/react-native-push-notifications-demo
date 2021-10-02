@@ -3,10 +3,12 @@ import {
   StackNavigationOptions,
 } from '@react-navigation/stack';
 import React, {useMemo} from 'react';
+import {useInitNotifications} from 'react-native-push-notifications-setup';
 import Header from '../components/Header';
-import useInitNotifications from '../hooks/useInitNotifications';
 import ArticleScreen from '../screens/Article';
 import MainScreen from '../screens/Main';
+import {deviceTokenAPIRequests} from '../utils/api';
+import {initializeProps} from '../utils/pushNotifications';
 import {Article} from '../utils/types';
 import * as NavigationKeys from './NavigationKeys';
 
@@ -18,7 +20,7 @@ export type RootNavigatorParamList = {
 const Stack = createStackNavigator<RootNavigatorParamList>();
 
 const RootNavigator = () => {
-  useInitNotifications();
+  useInitNotifications(initializeProps, deviceTokenAPIRequests);
 
   const commonScreenOptions = useMemo<StackNavigationOptions>(
     () => ({headerStyle: {backgroundColor: '#fff'}}),
