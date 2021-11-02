@@ -55,10 +55,15 @@ const Main: React.FC<ScreenProps> = ({navigation}) => {
   >(item => item.id, []);
 
   useEffect(() => {
-    const enableNotificationsAsync = () =>
-      setTimeout(() => enableNotifications(deviceTokenAPIRequests), 10000);
-
-    enableNotificationsAsync();
+    setTimeout(
+      () =>
+        enableNotifications(deviceTokenAPIRequests).catch(
+          notificationsError =>
+            __DEV__ &&
+            console.log('Error on enabling notifications', notificationsError),
+        ),
+      10000,
+    );
   }, []);
 
   if (error) {
