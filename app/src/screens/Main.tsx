@@ -9,7 +9,7 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import {usePushNotifications} from 'react-native-push-notifications-setup';
+import {enableNotifications} from 'react-native-push-notifications-setup';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import ArticleCard from '../components/ArticleCard';
 import EmptyList from '../components/EmptyList';
@@ -28,8 +28,6 @@ type ScreenProps = StackScreenProps<
 
 const Main: React.FC<ScreenProps> = ({navigation}) => {
   const {data, error, loading} = useQuery('articles');
-
-  const {enableNotifications} = usePushNotifications(deviceTokenAPIRequests);
 
   const articles = data?.articles ? (data.articles as Article[]) : [];
 
@@ -58,10 +56,10 @@ const Main: React.FC<ScreenProps> = ({navigation}) => {
 
   useEffect(() => {
     const enableNotificationsAsync = () =>
-      setTimeout(enableNotifications, 10000);
+      setTimeout(() => enableNotifications(deviceTokenAPIRequests), 10000);
 
     enableNotificationsAsync();
-  }, [enableNotifications]);
+  }, []);
 
   if (error) {
     return <ErrorComponent />;
