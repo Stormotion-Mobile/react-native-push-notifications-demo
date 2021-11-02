@@ -2,8 +2,8 @@ import {
   createStackNavigator,
   StackNavigationOptions,
 } from '@react-navigation/stack';
+import {useInitNotifications} from '@stormotion/react-native-push-notifications-setup';
 import React, {useMemo} from 'react';
-import {useInitNotifications} from 'react-native-push-notifications-setup';
 import Header from '../components/Header';
 import ArticleScreen from '../screens/Article';
 import MainScreen from '../screens/Main';

@@ -1504,6 +1504,11 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
+"@stormotion/react-native-push-notifications-setup@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@stormotion/react-native-push-notifications-setup/-/react-native-push-notifications-setup-0.0.1.tgz#20c1f7816c51076e9b0484562a97423f5a636e7f"
+  integrity sha512-2/sPcr65oig7KAXJFo5+27CUcnGjK5U4dRvc7+1qwhmU38oh/wy8eb0TEuVK6rYAFNVayJpSjOJwrKd7QlZIOw==
+
 "@types/babel__core@^7.0.0", "@types/babel__core@^7.1.7":
   version "7.1.14"
   resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.1.14.tgz#faaeefc4185ec71c389f4501ee5ec84b170cc402"
@@ -6110,10 +6115,6 @@ react-native-push-notification@^8.1.1:
   version "8.1.1"
   resolved "https://registry.yarnpkg.com/react-native-push-notification/-/react-native-push-notification-8.1.1.tgz#a41d20c70ea5a7709417e96261b225461f8dc73a"
   integrity sha512-XpBtG/w+a6WXTxu6l1dNYyTiHnbgnvjoc3KxPTxYkaIABRmvuJZkFxqruyGvfCw7ELAlZEAJO+dthdTabCe1XA==
-
-react-native-push-notifications-setup@/Users/user/Stormotion/react-native-push-notifications-setup/react-native-push-notifications-setup-0.0.1.tgz:
-  version "0.0.1"
-  resolved "/Users/user/Stormotion/react-native-push-notifications-setup/react-native-push-notifications-setup-0.0.1.tgz#99841ffc879dbc9ded6138536f8a3b792a629a1d"
 
 react-native-reanimated@^2.1.0:
   version "2.1.0"

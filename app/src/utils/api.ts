@@ -1,4 +1,4 @@
-import {DeviceTokenCallbacks} from 'react-native-push-notifications-setup';
+import {DeviceTokenCallbacks} from '@stormotion/react-native-push-notifications-setup';
 import {getUniqueId} from 'react-native-device-info';
 
 // To connect API on a physical device, specify the IP address

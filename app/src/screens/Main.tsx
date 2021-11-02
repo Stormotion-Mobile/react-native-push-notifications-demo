@@ -1,4 +1,5 @@
 import {StackScreenProps} from '@react-navigation/stack';
+import {enableNotifications} from '@stormotion/react-native-push-notifications-setup';
 import React, {useCallback, useEffect, useMemo} from 'react';
 import {
   FlatList,
@@ -9,7 +10,6 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import {enableNotifications} from 'react-native-push-notifications-setup';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import ArticleCard from '../components/ArticleCard';
 import EmptyList from '../components/EmptyList';

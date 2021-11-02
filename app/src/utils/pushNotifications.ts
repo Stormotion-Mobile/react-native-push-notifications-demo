@@ -1,14 +1,14 @@
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import {
+  configurePushNotifications as configurePushNotificationsSetup,
+  PushNotificationInitializeProps,
+} from '@stormotion/react-native-push-notifications-setup';
+import {
   ChannelObject,
   PushNotificationOptions,
 } from 'react-native-push-notification';
 import * as NavigationKeys from '../navigation/NavigationKeys';
 import {navigate} from './navigation';
-import {
-  PushNotificationInitializeProps,
-  configurePushNotifications as configurePushNotificationsSetup,
-} from 'react-native-push-notifications-setup';
 
 const channelsMainInformation: ChannelObject[] = [
   {channelId: 'tech', channelName: 'Tech'},
